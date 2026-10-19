@@ -11,6 +11,10 @@
 html,body{height:100%}
 body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--tx)}
 .hidden{display:none!important}
+.ic{width:1.15em;height:1.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;vertical-align:-.18em}
+.ib .ic{width:22px;height:22px;vertical-align:middle}
+#form button .ic{width:20px;height:20px;vertical-align:middle}
+.logo .ic{color:var(--ac);width:.8em;height:.8em;vertical-align:-.05em;-webkit-text-fill-color:initial}
 input{width:100%;padding:12px 14px;border:1.5px solid var(--ln);border-radius:12px;background:var(--bg);color:var(--tx);font:inherit;outline:0;transition:.15s}
 input:focus{border-color:var(--ac)}
 .btn{background:var(--g);color:#fff;border:0;padding:12px 18px;border-radius:12px;font:inherit;font-weight:600;cursor:pointer;width:100%;margin-top:10px;transition:.15s}
@@ -68,10 +72,11 @@ form input{margin-bottom:10px}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol><symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol><symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-5.4A8 8 0 1 1 21 12z"/></symbol></defs></svg>
 
 <div id="auth" class="center hidden">
  <div class="card">
-  <div class="logo">Hey<b>now</b> 👋</div>
+  <div class="logo">Hey<b>now</b> <svg class="ic"><use href="#i-chat"/></svg></div>
   <p class="tag">Chat with your people, in real time.</p>
   <div class="tabs"><button id="tIn" class="on" type="button">Sign in</button><button id="tUp" type="button">Sign up</button></div>
   <form id="af">
@@ -88,27 +93,27 @@ form input{margin-bottom:10px}
  <aside id="side">
   <div class="top">
    <button class="me" id="meBtn" title="Edit profile"><div id="meAv"></div><b id="meName"></b></button>
-   <button class="ib" id="addBtn" title="Add friends">➕<span class="dot hidden" id="dot"></span></button>
+   <button class="ib" id="addBtn" title="Add friends"><svg class="ic"><use href="#i-plus"/></svg><span class="dot hidden" id="dot"></span></button>
   </div>
   <div id="list"></div>
  </aside>
  <section id="main">
-  <div class="top hidden" id="head"><button class="ib" id="back">←</button><div id="hAv"></div><b id="hName"></b></div>
-  <div id="welcome"><div class="logo">Hey<b>now</b></div><p>Pick a friend to start chatting,<br>or add someone with ➕</p></div>
+  <div class="top hidden" id="head"><button class="ib" id="back"><svg class="ic"><use href="#i-back"/></svg></button><div id="hAv"></div><b id="hName"></b></div>
+  <div id="welcome"><div class="logo">Hey<b>now</b></div><p>Pick a friend to start chatting,<br>or add someone with the + button</p></div>
   <div id="msgs" class="hidden"></div>
-  <form id="form" class="hidden" autocomplete="off"><input id="text" placeholder="Type a message" maxlength="2000"><button title="Send">➤</button></form>
+  <form id="form" class="hidden" autocomplete="off"><input id="text" placeholder="Type a message" maxlength="2000"><button title="Send"><svg class="ic"><use href="#i-send"/></svg></button></form>
  </section>
 </div>
 
 <div class="modal hidden" id="mAdd"><div class="sheet">
- <h3>Add friends <button class="ib" data-x>✕</button></h3>
+ <h3>Add friends <button class="ib" data-x><svg class="ic"><use href="#i-close"/></svg></button></h3>
  <div class="row"><input id="fMail" type="email" placeholder="Friend’s email"><button class="btn sm" id="fSend">Send</button></div>
  <div class="err" id="fErr"></div>
  <h4>Friend requests</h4><div id="reqs"></div>
 </div></div>
 
 <div class="modal hidden" id="mProf"><div class="sheet">
- <h3>Your profile <button class="ib" data-x>✕</button></h3>
+ <h3>Your profile <button class="ib" data-x><svg class="ic"><use href="#i-close"/></svg></button></h3>
  <div id="pAv"></div>
  <input type="file" id="pFile" accept="image/*" class="hidden">
  <button class="btn sm ghost" id="pPick" style="display:block;margin:0 auto 14px">Change photo</button>
@@ -183,7 +188,7 @@ function watch(id){
 function list(){
   const box = $("list"); box.innerHTML = "";
   const ids = Object.keys(friends).sort((a, b) => ((U[a] || {}).name || "").localeCompare((U[b] || {}).name || ""));
-  if(!ids.length){ box.innerHTML = '<div class="hint">No friends yet.<br>Tap ➕ to add someone by email.</div>'; return; }
+  if(!ids.length){ box.innerHTML = '<div class="hint">No friends yet.<br>Tap the + button to add someone by email.</div>'; return; }
   ids.forEach(id => {
     const d = document.createElement("div"); d.className = "fr" + (id === cur ? " on" : "");
     const s = document.createElement("span"); s.textContent = (U[id] || {}).name || "…";
@@ -214,7 +219,7 @@ $("fSend").onclick = async () => {
     if(friends[t]) throw new Error("You’re already friends.");
     if(reqs[t]){ await db.ref().update({["friends/" + uid + "/" + t]: true, ["friends/" + t + "/" + uid]: true, ["requests/" + uid + "/" + t]: null}); }
     else await db.ref("requests/" + t + "/" + uid).set(true);
-    err.className = "ok"; err.textContent = "Done! 🎉"; $("fMail").value = "";
+    err.className = "ok"; err.innerHTML = '<svg class="ic"><use href="#i-check"/></svg> Request sent'; $("fMail").value = "";
   }catch(e){ err.textContent = e.message; }
 };
 
@@ -276,7 +281,7 @@ $("pFile").onchange = e => {
 $("pSave").onclick = async () => {
   const name = $("pName").value.trim(); if(!name) return;
   const up = {name}; if(newPhoto) up.photo = newPhoto;
-  await db.ref("users/" + uid).update(up); $("pOk").textContent = "Saved ✓";
+  await db.ref("users/" + uid).update(up); $("pOk").innerHTML = '<svg class="ic"><use href="#i-check"/></svg> Saved';
 };
 $("pOut").onclick = async () => { await auth.signOut(); location.reload(); };
 </script>
