@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Heynow</title>
+<style>
+:root{--g:linear-gradient(135deg,#6c5ce7,#b05cff);--ac:#7c5cf0;--bg:#f4f2fb;--pn:#fff;--tx:#1d1b2e;--sb:#7b7893;--ln:#ece9f7;--in:#fff;--out:#7c5cf0;--sh:0 8px 30px #6c5ce722}
+@media(prefers-color-scheme:dark){:root{--bg:#12101c;--pn:#1a1727;--tx:#eeecf9;--sb:#9591ad;--ln:#2a2640;--in:#262238;--sh:0 8px 30px #0006}}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,sans-serif;background:var(--bg);color:var(--tx)}
+.hidden{display:none!important}
+input{width:100%;padding:12px 14px;border:1.5px solid var(--ln);border-radius:12px;background:var(--bg);color:var(--tx);font:inherit;outline:0;transition:.15s}
+input:focus{border-color:var(--ac)}
+.btn{background:var(--g);color:#fff;border:0;padding:12px 18px;border-radius:12px;font:inherit;font-weight:600;cursor:pointer;width:100%;margin-top:10px;transition:.15s}
+.btn:hover{filter:brightness(1.08)}.btn.sm{width:auto;margin:0;padding:7px 12px;font-size:13px}
+.btn.ghost{background:var(--ln);color:var(--tx)}
+.ib{background:none;border:0;font-size:20px;cursor:pointer;color:var(--tx);position:relative;padding:6px 8px;border-radius:10px}
+.ib:hover{background:var(--ln)}
+.dot{position:absolute;top:0;right:0;background:#ff4d6d;color:#fff;font-size:11px;min-width:18px;height:18px;border-radius:9px;display:flex;align-items:center;justify-content:center}
+.center{height:100%;display:flex;align-items:center;justify-content:center;padding:16px;background:var(--g)}
+.card{background:var(--pn);padding:32px 28px;border-radius:24px;max-width:400px;width:100%;box-shadow:var(--sh)}
+.logo{font-size:34px;font-weight:800;letter-spacing:-1px;text-align:center}
+.logo b{background:var(--g);-webkit-background-clip:text;background-clip:text;color:transparent}
+.tag{color:var(--sb);text-align:center;margin:4px 0 20px;font-size:14px}
+.tabs{display:flex;background:var(--bg);border-radius:12px;padding:4px;margin-bottom:14px}
+.tabs button{flex:1;border:0;background:none;padding:9px;border-radius:9px;font:inherit;font-weight:600;color:var(--sb);cursor:pointer}
+.tabs button.on{background:var(--pn);color:var(--ac);box-shadow:0 1px 4px #0002}
+form input{margin-bottom:10px}
+.err{color:#e5484d;font-size:13px;min-height:18px}.ok{color:#1fa971;font-size:13px;min-height:18px;margin-top:6px}
+#app{height:100dvh;display:flex;max-width:1300px;margin:0 auto;background:var(--pn);box-shadow:var(--sh)}
+#side{width:340px;border-right:1px solid var(--ln);display:flex;flex-direction:column}
+.top{padding:12px 16px;display:flex;align-items:center;gap:10px;min-height:66px;border-bottom:1px solid var(--ln)}
+.top b{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.me{display:flex;align-items:center;gap:10px;flex:1;cursor:pointer;min-width:0;background:none;border:0;color:inherit;font:inherit;text-align:left}
+.av{width:42px;height:42px;border-radius:50%;background-size:cover;background-position:center;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;flex:none}
+.av.lg{width:96px;height:96px;font-size:36px;margin:0 auto 12px}
+#list{flex:1;overflow-y:auto}
+.fr{display:flex;gap:12px;align-items:center;padding:12px 16px;cursor:pointer}
+.fr:hover,.fr.on{background:var(--bg)}
+.fr span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:500}
+.hint{color:var(--sb);text-align:center;padding:40px 24px;line-height:1.6;font-size:14px}
+#main{flex:1;display:flex;flex-direction:column;min-width:0;background:var(--bg)}
+#main .top{background:var(--pn)}
+#back{display:none}
+#msgs{flex:1;overflow-y:auto;padding:16px 6%;display:flex;flex-direction:column;gap:3px}
+.day{align-self:center;background:var(--pn);color:var(--sb);font-size:12px;padding:4px 12px;border-radius:10px;margin:10px 0}
+.msg{max-width:min(75%,480px);padding:8px 12px 5px;border-radius:18px 18px 18px 4px;background:var(--in);box-shadow:0 1px 2px #0001;white-space:pre-wrap;word-wrap:break-word;line-height:1.4}
+.msg.me{align-self:flex-end;background:var(--out);color:#fff;border-radius:18px 18px 4px 18px}
+.msg time{display:block;text-align:right;font-size:10.5px;opacity:.6;margin-top:2px}
+#form{display:flex;gap:8px;padding:12px 16px;background:var(--pn);border-top:1px solid var(--ln)}
+#form input{border-radius:24px;padding:12px 18px}
+#form button{width:46px;height:46px;border-radius:50%;border:0;background:var(--g);color:#fff;font-size:18px;cursor:pointer;flex:none}
+#welcome{margin:auto;text-align:center;color:var(--sb);padding:20px}
+#welcome .logo{font-size:44px}
+.modal{position:fixed;inset:0;background:#0008;display:flex;align-items:center;justify-content:center;padding:16px;z-index:9}
+.sheet{background:var(--pn);border-radius:22px;padding:24px;width:100%;max-width:400px;max-height:90dvh;overflow-y:auto;box-shadow:var(--sh)}
+.sheet h3{margin-bottom:14px;display:flex;justify-content:space-between;align-items:center}
+.sheet h4{margin:18px 0 6px;color:var(--sb);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
+.req{display:flex;align-items:center;gap:10px;padding:8px 0}.req span{flex:1}
+.row{display:flex;gap:8px}.row input{flex:1}.row .btn{margin:0}
+@media(max-width:700px){
+ #side{width:100%}#main{display:none}
+ #app.chat #side{display:none}#app.chat #main{display:flex}
+ #back{display:block}#msgs{padding:12px}
+}
+</style>
+</head>
+<body>
+
+<div id="auth" class="center hidden">
+ <div class="card">
+  <div class="logo">Hey<b>now</b> 👋</div>
+  <p class="tag">Chat with your people, in real time.</p>
+  <div class="tabs"><button id="tIn" class="on" type="button">Sign in</button><button id="tUp" type="button">Sign up</button></div>
+  <form id="af">
+   <input id="aName" class="hidden" placeholder="Your name" maxlength="24">
+   <input id="aMail" type="email" placeholder="Email" required>
+   <input id="aPass" type="password" placeholder="Password (6+ characters)" required minlength="6">
+   <div class="err" id="aErr"></div>
+   <button class="btn" id="aGo">Sign in</button>
+  </form>
+ </div>
+</div>
+
+<div id="app" class="hidden">
+ <aside id="side">
+  <div class="top">
+   <button class="me" id="meBtn" title="Edit profile"><div id="meAv"></div><b id="meName"></b></button>
+   <button class="ib" id="addBtn" title="Add friends">➕<span class="dot hidden" id="dot"></span></button>
+  </div>
+  <div id="list"></div>
+ </aside>
+ <section id="main">
+  <div class="top hidden" id="head"><button class="ib" id="back">←</button><div id="hAv"></div><b id="hName"></b></div>
+  <div id="welcome"><div class="logo">Hey<b>now</b></div><p>Pick a friend to start chatting,<br>or add someone with ➕</p></div>
+  <div id="msgs" class="hidden"></div>
+  <form id="form" class="hidden" autocomplete="off"><input id="text" placeholder="Type a message" maxlength="2000"><button title="Send">➤</button></form>
+ </section>
+</div>
+
+<div class="modal hidden" id="mAdd"><div class="sheet">
+ <h3>Add friends <button class="ib" data-x>✕</button></h3>
+ <div class="row"><input id="fMail" type="email" placeholder="Friend’s email"><button class="btn sm" id="fSend">Send</button></div>
+ <div class="err" id="fErr"></div>
+ <h4>Friend requests</h4><div id="reqs"></div>
+</div></div>
+
+<div class="modal hidden" id="mProf"><div class="sheet">
+ <h3>Your profile <button class="ib" data-x>✕</button></h3>
+ <div id="pAv"></div>
+ <input type="file" id="pFile" accept="image/*" class="hidden">
+ <button class="btn sm ghost" id="pPick" style="display:block;margin:0 auto 14px">Change photo</button>
+ <input id="pName" placeholder="Display name" maxlength="24">
+ <div class="ok" id="pOk"></div>
+ <button class="btn" id="pSave">Save</button>
+ <button class="btn ghost" id="pOut">Sign out</button>
+</div></div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyAa8S7OvE-OcBN7ovwfDdqhJ1bi0cEQjI8",
+  authDomain: "heynow-c2212.firebaseapp.com",
+  databaseURL: "https://heynow-c2212-default-rtdb.firebaseio.com",
+  projectId: "heynow-c2212",
+  storageBucket: "heynow-c2212.firebasestorage.app",
+  messagingSenderId: "1017862976198",
+  appId: "1:1017862976198:web:35ae3e24f3f82fd76a9dc7",
+  measurementId: "G-RCDP82PMZ5"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth(), db = firebase.database();
+const $ = id => document.getElementById(id);
+const hash = s => [...s].reduce((a,c) => (a*31 + c.charCodeAt(0)) | 0, 7) >>> 0;
+const ekey = e => e.toLowerCase().replace(/[.#$\[\]\/]/g, c => "%" + c.charCodeAt(0).toString(16));
+let uid, prof = {}, friends = {}, reqs = {}, U = {}, W = {}, cur = null, mref = null, newPhoto = null, signUp = false;
+
+function paint(el, u){
+  el.className = (el.dataset.lg ? "av lg" : "av"); el.style.cssText = ""; el.textContent = "";
+  if(u && u.photo) el.style.backgroundImage = 'url("' + u.photo + '")';
+  else { const n = (u && u.name) || "?"; el.textContent = n[0].toUpperCase(); el.style.background = "hsl(" + (hash(n) % 360) + " 60% 52%)"; }
+}
+function mkAv(u){ const d = document.createElement("div"); paint(d, u); return d; }
+function show(id){ $("auth").classList.toggle("hidden", id !== "auth"); $("app").classList.toggle("hidden", id !== "app"); }
+
+// ---------- Auth ----------
+function mode(up){
+  signUp = up; $("tIn").classList.toggle("on", !up); $("tUp").classList.toggle("on", up);
+  $("aName").classList.toggle("hidden", !up); $("aGo").textContent = up ? "Create account" : "Sign in"; $("aErr").textContent = "";
+}
+$("tIn").onclick = () => mode(false); $("tUp").onclick = () => mode(true);
+$("af").onsubmit = async e => {
+  e.preventDefault(); $("aErr").textContent = "";
+  const mail = $("aMail").value.trim(), pass = $("aPass").value, name = $("aName").value.trim();
+  try{
+    if(signUp){
+      if(!name) throw new Error("Please enter your name.");
+      const c = await auth.createUserWithEmailAndPassword(mail, pass), id = c.user.uid;
+      await db.ref().update({["users/" + id]: {name, email: mail.toLowerCase(), photo: ""}, ["emailIndex/" + ekey(mail)]: id});
+    } else await auth.signInWithEmailAndPassword(mail, pass);
+  }catch(err){ $("aErr").textContent = err.message.replace("Firebase: ", "").replace(/\s*\(auth\/.*\)\.?/, "."); }
+};
+auth.onAuthStateChanged(u => {
+  if(!u){ show("auth"); return; }
+  uid = u.uid; show("app");
+  db.ref("users/" + uid).on("value", s => {
+    prof = s.val() || {name: (u.email || "me").split("@")[0]};
+    $("meName").textContent = prof.name; const a = $("meAv"); a.dataset.lg = ""; paint(a, prof);
+  });
+  db.ref("friends/" + uid).on("value", s => { friends = s.val() || {}; Object.keys(friends).forEach(watch); list(); });
+  db.ref("requests/" + uid).on("value", s => { reqs = s.val() || {}; Object.keys(reqs).forEach(watch); reqList(); });
+});
+
+// ---------- Users, friends ----------
+function watch(id){
+  if(W[id]) return; W[id] = 1;
+  db.ref("users/" + id).on("value", s => { U[id] = s.val() || {name: "Unknown"}; list(); reqList(); if(cur === id) header(); });
+}
+function list(){
+  const box = $("list"); box.innerHTML = "";
+  const ids = Object.keys(friends).sort((a, b) => ((U[a] || {}).name || "").localeCompare((U[b] || {}).name || ""));
+  if(!ids.length){ box.innerHTML = '<div class="hint">No friends yet.<br>Tap ➕ to add someone by email.</div>'; return; }
+  ids.forEach(id => {
+    const d = document.createElement("div"); d.className = "fr" + (id === cur ? " on" : "");
+    const s = document.createElement("span"); s.textContent = (U[id] || {}).name || "…";
+    d.append(mkAv(U[id]), s); d.onclick = () => openChat(id); box.append(d);
+  });
+}
+function reqList(){
+  const ids = Object.keys(reqs), box = $("reqs"); box.innerHTML = "";
+  const dot = $("dot"); dot.textContent = ids.length; dot.classList.toggle("hidden", !ids.length);
+  if(!ids.length){ box.innerHTML = '<div class="hint" style="padding:12px">No pending requests</div>'; return; }
+  ids.forEach(id => {
+    const r = document.createElement("div"); r.className = "req";
+    const s = document.createElement("span"); s.textContent = (U[id] || {}).name || "…";
+    const ok = document.createElement("button"); ok.className = "btn sm"; ok.textContent = "Accept";
+    ok.onclick = () => db.ref().update({["friends/" + uid + "/" + id]: true, ["friends/" + id + "/" + uid]: true, ["requests/" + uid + "/" + id]: null});
+    const no = document.createElement("button"); no.className = "btn sm ghost"; no.textContent = "Decline";
+    no.onclick = () => db.ref("requests/" + uid + "/" + id).remove();
+    r.append(mkAv(U[id]), s, ok, no); box.append(r);
+  });
+}
+$("fSend").onclick = async () => {
+  const err = $("fErr"), mail = $("fMail").value.trim(); err.className = "err"; err.textContent = "";
+  if(!mail) return;
+  try{
+    const t = (await db.ref("emailIndex/" + ekey(mail)).once("value")).val();
+    if(!t) throw new Error("No Heynow user with that email.");
+    if(t === uid) throw new Error("That’s you!");
+    if(friends[t]) throw new Error("You’re already friends.");
+    if(reqs[t]){ await db.ref().update({["friends/" + uid + "/" + t]: true, ["friends/" + t + "/" + uid]: true, ["requests/" + uid + "/" + t]: null}); }
+    else await db.ref("requests/" + t + "/" + uid).set(true);
+    err.className = "ok"; err.textContent = "Done! 🎉"; $("fMail").value = "";
+  }catch(e){ err.textContent = e.message; }
+};
+
+// ---------- Chat ----------
+function header(){ const a = $("hAv"); paint(a, U[cur]); $("hName").textContent = (U[cur] || {}).name || ""; }
+const tm = t => new Date(t).toLocaleTimeString([], {hour: "2-digit", minute: "2-digit"});
+function dayLbl(t){
+  const d = new Date(t), n = new Date();
+  if(d.toDateString() === n.toDateString()) return "Today";
+  if(d.toDateString() === new Date(Date.now() - 864e5).toDateString()) return "Yesterday";
+  return d.toLocaleDateString([], {day: "numeric", month: "short", year: "numeric"});
+}
+function openChat(id){
+  if(mref) mref.off();
+  cur = id; header(); list();
+  ["head", "msgs", "form"].forEach(x => $(x).classList.remove("hidden")); $("welcome").classList.add("hidden");
+  $("app").classList.add("chat");
+  const box = $("msgs"); box.innerHTML = ""; let last = null;
+  mref = db.ref("chats/" + [uid, id].sort().join("_") + "/messages").limitToLast(200);
+  mref.on("child_added", s => {
+    const m = s.val(); if(!m) return;
+    const near = box.scrollHeight - box.scrollTop - box.clientHeight < 120, ts = m.ts || Date.now(), dl = dayLbl(ts);
+    if(dl !== last){ const d = document.createElement("div"); d.className = "day"; d.textContent = dl; box.append(d); last = dl; }
+    const el = document.createElement("div"); el.className = "msg" + (m.from === uid ? " me" : "");
+    el.append(document.createTextNode(m.text));
+    const t = document.createElement("time"); t.textContent = tm(ts); el.append(t); box.append(el);
+    if(near || m.from === uid) box.scrollTop = box.scrollHeight;
+  });
+  $("text").focus();
+}
+$("form").onsubmit = e => {
+  e.preventDefault(); const text = $("text").value.trim(); if(!text || !cur) return;
+  db.ref("chats/" + [uid, cur].sort().join("_") + "/messages").push({from: uid, text, ts: firebase.database.ServerValue.TIMESTAMP});
+  $("text").value = "";
+};
+$("back").onclick = () => $("app").classList.remove("chat");
+
+// ---------- Modals & profile ----------
+document.querySelectorAll("[data-x]").forEach(b => b.onclick = () => b.closest(".modal").classList.add("hidden"));
+document.querySelectorAll(".modal").forEach(m => m.onclick = e => { if(e.target === m) m.classList.add("hidden"); });
+$("addBtn").onclick = () => { $("fErr").textContent = ""; $("mAdd").classList.remove("hidden"); };
+$("meBtn").onclick = () => {
+  newPhoto = null; $("pName").value = prof.name || ""; $("pOk").textContent = "";
+  const a = $("pAv"); a.dataset.lg = 1; paint(a, prof); $("mProf").classList.remove("hidden");
+};
+$("pPick").onclick = () => $("pFile").click();
+$("pFile").onchange = e => {
+  const f = e.target.files[0]; if(!f) return;
+  const img = new Image(), r = new FileReader();
+  r.onload = () => { img.src = r.result; };
+  img.onload = () => {
+    const c = document.createElement("canvas"), n = 160; c.width = c.height = n;
+    const s = Math.min(img.width, img.height);
+    c.getContext("2d").drawImage(img, (img.width - s) / 2, (img.height - s) / 2, s, s, 0, 0, n, n);
+    newPhoto = c.toDataURL("image/jpeg", .82); paint($("pAv"), {photo: newPhoto});
+  };
+  r.readAsDataURL(f);
+};
+$("pSave").onclick = async () => {
+  const name = $("pName").value.trim(); if(!name) return;
+  const up = {name}; if(newPhoto) up.photo = newPhoto;
+  await db.ref("users/" + uid).update(up); $("pOk").textContent = "Saved ✓";
+};
+$("pOut").onclick = async () => { await auth.signOut(); location.reload(); };
+</script>
+</body>
+</html>
