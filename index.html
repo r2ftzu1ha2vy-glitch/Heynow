@@ -64,6 +64,23 @@ form input{margin-bottom:10px}
 .sheet h4{margin:18px 0 6px;color:var(--sb);font-size:12px;text-transform:uppercase;letter-spacing:.06em}
 .req{display:flex;align-items:center;gap:10px;padding:8px 0}.req span{flex:1}
 .row{display:flex;gap:8px}.row input{flex:1}.row .btn{margin:0}
+.msg{position:relative}.msg.me{padding-right:26px}
+.mb{position:absolute;top:3px;right:4px;background:none;border:0;color:inherit;opacity:0;cursor:pointer;padding:2px;border-radius:6px}
+.msg:hover .mb{opacity:.75}@media(hover:none){.mb{opacity:.6}}
+.mb .ic{width:16px;height:16px}
+.pop{position:absolute;top:26px;right:4px;background:var(--pn);color:var(--tx);border-radius:12px;box-shadow:var(--sh);z-index:5;overflow:hidden;min-width:120px}
+.pop button{display:flex;gap:8px;align-items:center;width:100%;background:none;border:0;color:inherit;padding:10px 12px;font:inherit;font-size:14px;cursor:pointer}
+.pop button:hover{background:var(--bg)}
+.th{display:block;max-width:100%;border-radius:12px;margin-bottom:6px;cursor:zoom-in}
+.file{display:flex;align-items:center;gap:10px;background:#0000001f;border-radius:12px;padding:8px 10px;margin-bottom:4px;min-width:210px}
+.msg:not(.me) .file{background:var(--bg)}
+.file .ic{width:22px;height:22px}
+.file>div{flex:1;min-width:0;display:flex;flex-direction:column}
+.file b{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:14px}.file small{opacity:.7;font-size:12px}
+.dl{background:none;border:0;color:inherit;cursor:pointer;padding:4px}
+#ebar{display:flex;align-items:center;justify-content:space-between;padding:4px 16px;background:var(--pn);border-top:1px solid var(--ln);color:var(--ac);font-size:13px;font-weight:600}
+#form #clip{background:none;color:var(--sb)}#form #clip:disabled{opacity:.4}
+#form #clip .ic{width:22px;height:22px}
 @media(max-width:700px){
  #side{width:100%}#main{display:none}
  #app.chat #side{display:none}#app.chat #main{display:flex}
@@ -72,7 +89,7 @@ form input{margin-bottom:10px}
 </style>
 </head>
 <body>
-<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol><symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol><symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-5.4A8 8 0 1 1 21 12z"/></symbol></defs></svg>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol><symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol><symbol id="i-send" viewBox="0 0 24 24"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4z"/></symbol><symbol id="i-back" viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></symbol><symbol id="i-check" viewBox="0 0 24 24"><path d="M20 6L9 17l-5-5"/></symbol><symbol id="i-chat" viewBox="0 0 24 24"><path d="M21 12a8 8 0 0 1-11.6 7.1L3 21l1.9-5.4A8 8 0 1 1 21 12z"/></symbol><symbol id="i-clip" viewBox="0 0 24 24"><path d="M21 11.5l-8.6 8.6a5.5 5.5 0 0 1-7.8-7.8l8.6-8.6a3.7 3.7 0 0 1 5.2 5.2l-8.6 8.6a1.8 1.8 0 0 1-2.6-2.6l7.9-7.9"/></symbol><symbol id="i-out" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4M16 17l5-5-5-5M21 12H9"/></symbol><symbol id="i-more" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol><symbol id="i-file" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8zM14 2v6h6"/></symbol><symbol id="i-edit" viewBox="0 0 24 24"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></symbol><symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4h8v2M19 6l-1 14H6L5 6M10 11v6M14 11v6"/></symbol><symbol id="i-down" viewBox="0 0 24 24"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></symbol></defs></svg>
 
 <div id="auth" class="center hidden">
  <div class="card">
@@ -94,6 +111,7 @@ form input{margin-bottom:10px}
   <div class="top">
    <button class="me" id="meBtn" title="Edit profile"><div id="meAv"></div><b id="meName"></b></button>
    <button class="ib" id="addBtn" title="Add friends"><svg class="ic"><use href="#i-plus"/></svg><span class="dot hidden" id="dot"></span></button>
+   <button class="ib" id="outBtn" title="Log out"><svg class="ic"><use href="#i-out"/></svg></button>
   </div>
   <div id="list"></div>
  </aside>
@@ -101,7 +119,8 @@ form input{margin-bottom:10px}
   <div class="top hidden" id="head"><button class="ib" id="back"><svg class="ic"><use href="#i-back"/></svg></button><div id="hAv"></div><b id="hName"></b></div>
   <div id="welcome"><div class="logo">Hey<b>now</b></div><p>Pick a friend to start chatting,<br>or add someone with the + button</p></div>
   <div id="msgs" class="hidden"></div>
-  <form id="form" class="hidden" autocomplete="off"><input id="text" placeholder="Type a message" maxlength="2000"><button title="Send"><svg class="ic"><use href="#i-send"/></svg></button></form>
+  <div id="ebar" class="hidden"><span>Editing message</span><button class="ib" id="ecan" type="button" title="Cancel"><svg class="ic"><use href="#i-close"/></svg></button></div>
+  <form id="form" class="hidden" autocomplete="off"><button type="button" id="clip" title="Send a file"><svg class="ic"><use href="#i-clip"/></svg></button><input type="file" id="file" class="hidden" multiple><input id="text" placeholder="Type a message"><button title="Send"><svg class="ic"><use href="#i-send"/></svg></button></form>
  </section>
 </div>
 
@@ -111,6 +130,8 @@ form input{margin-bottom:10px}
  <div class="err" id="fErr"></div>
  <h4>Friend requests</h4><div id="reqs"></div>
 </div></div>
+
+<div class="modal hidden" id="mImg"><img id="big" alt="" onclick="this.closest('.modal').classList.add('hidden')" style="max-width:100%;max-height:90dvh;border-radius:16px"></div>
 
 <div class="modal hidden" id="mProf"><div class="sheet">
  <h3>Your profile <button class="ib" data-x><svg class="ic"><use href="#i-close"/></svg></button></h3>
@@ -232,29 +253,125 @@ function dayLbl(t){
   if(d.toDateString() === new Date(Date.now() - 864e5).toDateString()) return "Yesterday";
   return d.toLocaleDateString([], {day: "numeric", month: "short", year: "numeric"});
 }
+const I = n => '<svg class="ic"><use href="#i-' + n + '"/></svg>';
+const cid = () => [uid, cur].sort().join("_");
+const fsize = n => n < 1024 ? n + " B" : n < 1048576 ? Math.round(n / 1024) + " KB" : (n / 1048576).toFixed(1) + " MB";
+let editing = null, MS = {}, EL = {};
+
+function render(el, m, key){
+  const mine = m.from === uid; el.className = "msg" + (mine ? " me" : ""); el.innerHTML = "";
+  if(mine){
+    const b = document.createElement("button"); b.type = "button"; b.className = "mb"; b.innerHTML = I("more");
+    b.onclick = e => { e.stopPropagation(); menu(el, key); }; el.append(b);
+  }
+  if(m.file){
+    const f = m.file;
+    if(f.thumb){ const im = document.createElement("img"); im.src = f.thumb; im.className = "th"; im.onclick = () => getFile(key, f, true); el.append(im); }
+    const c = document.createElement("div"); c.className = "file";
+    const ico = document.createElement("span"); ico.innerHTML = I("file");
+    const d = document.createElement("div"), nm = document.createElement("b"), sz = document.createElement("small");
+    nm.textContent = f.name; sz.textContent = fsize(f.size); d.append(nm, sz);
+    const dl = document.createElement("button"); dl.type = "button"; dl.className = "dl"; dl.title = "Download"; dl.innerHTML = I("down");
+    dl.onclick = () => getFile(key, f, false);
+    c.append(ico, d, dl); el.append(c);
+  }
+  if(m.text) el.append(document.createTextNode(m.text));
+  const t = document.createElement("time"); t.textContent = (m.edited ? "edited · " : "") + tm(m.ts || Date.now()); el.append(t);
+}
+const closeMenus = () => document.querySelectorAll(".pop").forEach(p => p.remove());
+document.addEventListener("click", closeMenus);
+function pbtn(label, icon, fn){
+  const b = document.createElement("button"); b.type = "button"; b.innerHTML = I(icon) + " " + label;
+  b.onclick = e => { e.stopPropagation(); closeMenus(); fn(); }; return b;
+}
+function menu(el, key){
+  closeMenus(); const m = MS[key], p = document.createElement("div"); p.className = "pop";
+  if(m.text && !m.file) p.append(pbtn("Edit", "edit", () => startEdit(key)));
+  p.append(pbtn("Delete", "trash", () => delMsg(key))); el.append(p);
+}
+function startEdit(key){
+  editing = key; $("text").value = MS[key].text; $("ebar").classList.remove("hidden"); $("text").focus();
+}
+function stopEdit(){ editing = null; $("text").value = ""; $("ebar").classList.add("hidden"); }
+$("ecan").onclick = stopEdit;
+async function delMsg(key){
+  if(!confirm("Delete this message for everyone?")) return;
+  const id = cid(), m = MS[key];
+  if(editing === key) stopEdit();
+  try{
+    if(m && m.file) await db.ref("files/" + id + "/" + key).remove();
+    await db.ref("chats/" + id + "/messages/" + key).remove();
+  }catch(e){ alert("Couldn’t delete: " + e.message); }
+}
+async function getFile(key, f, view){
+  try{
+    const d = (await db.ref("files/" + cid() + "/" + key + "/data").once("value")).val();
+    if(!d){ alert("This file is no longer available."); return; }
+    if(view){ $("big").src = d; $("mImg").classList.remove("hidden"); return; }
+    const blob = await (await fetch(d)).blob(), a = document.createElement("a");
+    a.href = URL.createObjectURL(blob); a.download = f.name; document.body.append(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(a.href), 4000);
+  }catch(e){ alert("Couldn’t open file: " + e.message); }
+}
+const thumb = src => new Promise(res => {
+  const im = new Image();
+  im.onload = () => { const k = Math.min(1, 260 / Math.max(im.width, im.height)), c = document.createElement("canvas");
+    c.width = im.width * k; c.height = im.height * k; c.getContext("2d").drawImage(im, 0, 0, c.width, c.height); res(c.toDataURL("image/jpeg", .7)); };
+  im.onerror = () => res(""); im.src = src;
+});
+async function sendFile(file){
+  if(!cur) return;
+  if(file.size > 4 * 1024 * 1024){ alert(file.name + " is over the 4 MB limit."); return; }
+  const id = cid();
+  const data = await new Promise((ok, no) => { const r = new FileReader(); r.onload = () => ok(r.result); r.onerror = no; r.readAsDataURL(file); });
+  const meta = {name: file.name, size: file.size, type: file.type || ""};
+  if(/^image\/(png|jpe?g|gif|webp)/.test(file.type)) meta.thumb = await thumb(data);
+  const r = db.ref("chats/" + id + "/messages").push();
+  await db.ref("files/" + id + "/" + r.key).set({from: uid, data});
+  await r.set({from: uid, file: meta, ts: firebase.database.ServerValue.TIMESTAMP});
+}
+$("clip").onclick = () => $("file").click();
+$("file").onchange = async e => {
+  const fs = [...e.target.files]; e.target.value = ""; $("clip").disabled = true;
+  try{ for(const f of fs) await sendFile(f); }catch(err){ alert("Couldn’t send file: " + err.message); }
+  $("clip").disabled = false;
+};
+
 function openChat(id){
   if(mref) mref.off();
-  cur = id; header(); list();
+  cur = id; header(); list(); stopEdit(); MS = {}; EL = {};
   ["head", "msgs", "form"].forEach(x => $(x).classList.remove("hidden")); $("welcome").classList.add("hidden");
   $("app").classList.add("chat");
   const box = $("msgs"); box.innerHTML = ""; let last = null;
-  mref = db.ref("chats/" + [uid, id].sort().join("_") + "/messages").limitToLast(200);
+  mref = db.ref("chats/" + cid() + "/messages").limitToLast(200);
   mref.on("child_added", s => {
-    const m = s.val(); if(!m) return;
+    const m = s.val(); if(!m) return; MS[s.key] = m;
     const near = box.scrollHeight - box.scrollTop - box.clientHeight < 120, ts = m.ts || Date.now(), dl = dayLbl(ts);
     if(dl !== last){ const d = document.createElement("div"); d.className = "day"; d.textContent = dl; box.append(d); last = dl; }
-    const el = document.createElement("div"); el.className = "msg" + (m.from === uid ? " me" : "");
-    el.append(document.createTextNode(m.text));
-    const t = document.createElement("time"); t.textContent = tm(ts); el.append(t); box.append(el);
+    const el = document.createElement("div"); EL[s.key] = el; render(el, m, s.key); box.append(el);
     if(near || m.from === uid) box.scrollTop = box.scrollHeight;
   });
+  mref.on("child_changed", s => { MS[s.key] = s.val(); if(EL[s.key]) render(EL[s.key], s.val(), s.key); });
+  mref.on("child_removed", s => { if(EL[s.key]){ EL[s.key].remove(); delete EL[s.key]; delete MS[s.key]; } });
   $("text").focus();
 }
-$("form").onsubmit = e => {
+$("form").onsubmit = async e => {
   e.preventDefault(); const text = $("text").value.trim(); if(!text || !cur) return;
-  db.ref("chats/" + [uid, cur].sort().join("_") + "/messages").push({from: uid, text, ts: firebase.database.ServerValue.TIMESTAMP});
+  if(editing){
+    const k = editing, old = MS[k] && MS[k].text; stopEdit();
+    if(text !== old) await db.ref("chats/" + cid() + "/messages/" + k).update({text, edited: true});
+    return;
+  }
+  if(text.length > 2000){
+    if(!confirm("That’s a long message. Send it as a text file instead?")) return;
+    $("text").value = ""; try{ await sendFile(new File([text], "message.txt", {type: "text/plain"})); }catch(err){ alert(err.message); }
+    return;
+  }
   $("text").value = "";
+  db.ref("chats/" + cid() + "/messages").push({from: uid, text, ts: firebase.database.ServerValue.TIMESTAMP});
 };
+$("text").onkeydown = e => { if(e.key === "Escape" && editing) stopEdit(); };
+$("outBtn").onclick = async () => { if(confirm("Log out of Heynow?")){ await auth.signOut(); location.reload(); } };
 $("back").onclick = () => $("app").classList.remove("chat");
 
 // ---------- Modals & profile ----------
